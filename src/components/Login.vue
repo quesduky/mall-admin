@@ -25,6 +25,15 @@
 					ref="inputPw"
 					clearable>
 				</el-input>
+				<div class="numCode public">
+					<el-input
+					  placeholder="请输入验证码"
+					  v-model="numCode"
+						class="numCodeInput"
+					  clearable>
+					</el-input>
+					<img src="https://user.api.it120.cc/code" alt="" class="numCodeImg">
+				</div>
 			</div>
 			<!-- 登陆 -->
 			<div class="btn">
@@ -44,8 +53,12 @@
 		data(){
 			return{
 				inputUser: '',
-				inputPw: ''
+				inputPw: '',
+				numCode: ''
 			}
+		},
+		created(){
+			
 		},
 		methods:{
 			// 用户名校验
@@ -61,10 +74,15 @@
 				// 	console.log("输入账号过长")
 				// }
 				// 正则校验,账号必须为6-20位字母和数字组合
-				if(!/^(?![0-9]*$)(?![a-zA-Z]*$)[a-zA-Z0-9]{6,20}$/.test(n)){
-					this.$message.error('账号必须为6-20位字母和数字组合');
+				// if(!/^(?![0-9]*$)(?![a-zA-Z]*$)[a-zA-Z0-9]{6,20}$/.test(n)){
+				// 	this.$message.error('账号必须为6-20位字母和数字组合');
+				// 	this.$refs.inputUser.value = ''
+				// 	return false
+				// }
+				//这块用的手机号验证登陆
+				if(!/^[1][3-9][0-9]{9}$/.test(n)){
+					this.$message.error('账号必须为11位手机号');
 					this.$refs.inputUser.value = ''
-					return false
 				}
 				// console.log(this.inputUser)
 			},
@@ -116,6 +134,18 @@
 	.public{
 		width: 320px;	
 		margin: 10px auto;
+	}
+	.numCode{
+		display: flex;
+	}
+	.numCodeInput{
+		width: 240px;
+	}
+	.numCodeImg{
+		width: 80px;
+		height: 40px;
+		/* border: 1px #000 solid; */
+		margin-left:0px;
 	}
 	.btn{
 		width: 100%;
