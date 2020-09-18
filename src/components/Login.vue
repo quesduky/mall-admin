@@ -9,9 +9,9 @@
 					class="public"
 					placeholder="请输入账号"
 					prefix-icon="el-icon-search"
-					v-model="inputUser"
+					v-model="username"
 					@blur="checkUser"
-					ref="inputUser"
+					ref="usernameref"
 					clearable>
 				</el-input>
 				<!-- 密码框 -->
@@ -20,24 +20,26 @@
 					placeholder="请输入密码"
 					type="password"
 					prefix-icon="el-icon-search"
-					v-model="inputPw"
+					v-model="password"
 					@blur="checkPw"
-					ref="inputPw"
+					ref="passwordref"
 					clearable>
 				</el-input>
 				<div class="numCode public">
 					<el-input
 					  placeholder="请输入验证码"
 					  v-model="numCode"
+						@blur="checkCode"
+						ref="code"
 						class="numCodeInput"
 					  clearable>
 					</el-input>
-					<img src="https://user.api.it120.cc/code" alt="" class="numCodeImg">
+					<img :src="imgUrl" alt="" class="numCodeImg" @click="getImgCode">
 				</div>
 			</div>
 			<!-- 登陆 -->
 			<div class="btn">
-				<el-button type="primary" class="public">登陆</el-button>
+				<el-button type="primary" class="public" >登陆</el-button>
 			</div>
 			<!-- 找回密码 -->
 			<div class="btn">
@@ -48,13 +50,17 @@
 </template>
 
 <script>
+	// import request from '../axios/request.js'
+	
+	import axios from 'axios'
 	export default{
 		name: "Login",
 		data(){
 			return{
-				inputUser: '',
-				inputPw: '',
-				numCode: ''
+				username: '',
+				password: '',
+				numCode: '',
+				imgUrl: 'https://user.api.it120.cc/code'
 			}
 		},
 		created(){
@@ -63,7 +69,7 @@
 		methods:{
 			// 用户名校验
 			checkUser(){
-				let n = this.$refs.inputUser.value
+				let n = this.$refs.usernameref.value
 				// 空值校验
 				if(n == ''){
 					this.$message.error('账号不能为空');
@@ -82,22 +88,51 @@
 				//这块用的手机号验证登陆
 				if(!/^[1][3-9][0-9]{9}$/.test(n)){
 					this.$message.error('账号必须为11位手机号');
-					this.$refs.inputUser.value = ''
+					this.$refs.usernameref.value = ''
 				}
 				// console.log(this.inputUser)
 			},
 			// 密码校验
 			checkPw(){
-				let p = this.$refs.inputPw.value
+				let p = this.$refs.passwordref.value
 				if(p == ''){
 					this.$message.error('密码不能为空');
 					return false
 				}
 				if(!/^(?![0-9]*$)(?![a-zA-Z]*$)[a-zA-Z0-9]{6,20}$/.test(p)){
 					this.$message.error('密码必须为6-20位字母和数字组合');
-					this.$refs.inputPw.value = ''
+					this.$refs.passwordref.value = ''
 				}
+			},
+			// 短信验证码校验
+			checkCode(){
+				let c = this.$refs.code.value
+				if(c == ''){
+					this.$message.error('验证码不能为空');
+					return false
+				}
+			},
+			// 点击图片实现刷新功能
+			getImgCode(){
+				this.imgUrl = this.imgUrl + '?' + Math.random()
 			}
+			// 发送登陆请求
+			// login(){
+			// 	axios.post('https://user.api.it120.cc/login/userName/v2',{
+			// 		params:{
+			// 			mobile: 15668421689,
+			// 			pwd: 123456,
+			// 			imgcode: 4567,
+			// 			k: 0.1
+						
+			// 		}
+			// 	}).then( res =>{
+			// 		console.log(res)
+			// 	}).catch( err =>{
+			// 		console.log(err)
+			// 	})
+			// }
+			
 		}
 	}
 </script>
