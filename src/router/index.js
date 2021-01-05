@@ -14,7 +14,7 @@ Vue.use(VueRouter)
 		{
 			// 路由重定向
 			path: '/',
-			redirect: '/home'
+			redirect: '/login'
 		},
 		{
 			// 登陆

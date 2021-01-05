@@ -39,12 +39,14 @@
 			</div>
 			<!-- 登陆 -->
 			<div class="btn">
-				<el-button type="primary" class="public" >登陆</el-button>
+				<el-button type="primary" class="public" @click="login">登陆</el-button>
 			</div>
 			<!-- 找回密码 -->
 			<div class="btn">
 				<el-button type="info" class="public">找回密码</el-button>
 			</div>
+			<!-- 登录提示 -->
+			
 		</div>
 	</div>
 </template>
@@ -115,23 +117,40 @@
 			// 点击图片实现刷新功能
 			getImgCode(){
 				this.imgUrl = this.imgUrl + '?' + Math.random()
-			}
+			},
 			// 发送登陆请求
-			// login(){
-			// 	axios.post('https://user.api.it120.cc/login/userName/v2',{
-			// 		params:{
-			// 			mobile: 15668421689,
-			// 			pwd: 123456,
-			// 			imgcode: 4567,
-			// 			k: 0.1
+			login(){
+				// 预校验
+				if(this.username == "" && this.password == "" &this.numCode == ""){
+					return this.$message.error("请填写账号密码及验证码")
+				}
+				// 发起请求
+				axios.post('https://api.it120.cc/az/mock/v1/login',{
+					params:{
+						mobile: 15668421689,
+						pwd: 123456,
+						imgcode: 4567,
+						k: 0.1
 						
-			// 		}
-			// 	}).then( res =>{
-			// 		console.log(res)
-			// 	}).catch( err =>{
-			// 		console.log(err)
-			// 	})
-			// }
+					}
+				}).then( res =>{
+					res = JSON.parse(res.data)
+					if(res.code == 200){
+						// 登录成功弹框
+						this.$message.success("登录成功")
+						//console.log(res.msg)
+					}
+					else{
+						//登录失败弹框
+						this.$message.error("登录失败")
+						//console.log("登录失败")
+					}
+				}).catch( err =>{
+					console.log(err)
+				})
+				//登录成功跳转到后台主页
+				this.$router.push('/home')
+			}
 			
 		}
 	}
