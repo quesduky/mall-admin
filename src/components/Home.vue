@@ -28,7 +28,7 @@
 					<el-submenu index="1">
 						<template slot="title"><i class="el-icon-s-data"></i>数据统计</template>
 						<el-menu-item index="/orderData">订单数据</el-menu-item>
-						<el-menu-item index="userData">用户数据</el-menu-item>
+						<el-menu-item index="/userData">用户数据</el-menu-item>
 					</el-submenu>
 					<el-submenu index="2">
 						<template slot="title"><i class="el-icon-menu"></i>导航二</template>

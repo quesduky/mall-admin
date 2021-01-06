@@ -12,3 +12,14 @@ body{
 #app{
 	height: 100%;
 }
+
+/* element-ui面包屑下边距 */
+.el-breadcrumb{
+	margin-bottom:15px;
+}
+.el-card{
+	
+}
+.el-table{
+	margin-top:15px;
+}
