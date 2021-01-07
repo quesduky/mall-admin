@@ -131,7 +131,6 @@
 						pwd: 123456,
 						imgcode: 4567,
 						k: 0.1
-						
 					}
 				}).then( res =>{
 					res = JSON.parse(res.data)

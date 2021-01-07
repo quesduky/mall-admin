@@ -17,7 +17,7 @@
 				</el-col>
 				<!-- 添加用户按钮 -->
 				<el-col :span="6">
-					<el-button type="primary">添加用户</el-button>
+					<el-button type="primary" @click="dialogVisible = true">添加用户</el-button>
 				</el-col>
 			</el-row>
 
@@ -31,7 +31,7 @@
 				<el-table-column label="状态">
 					<!-- 作用域插槽：子元素获取当前行的数据，双向绑定到switch上 -->
 					<template slot-scope="scope">
-						<el-switch v-model="scope.row.mg_state">
+						<el-switch v-model="scope.row.mg_state" @change="switchStatuChange(scope.row)">
 						</el-switch>
 					</template>
 				</el-table-column>
@@ -49,9 +49,34 @@
 
 			<!-- 底部分页区域 -->
 			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pageNum"
-			 :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="40">
+			 :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.pageSize" layout="total, sizes, prev, pager, next, jumper"
+			 :total="40">
 			</el-pagination>
 		</el-card>
+
+		<!-- 添加用户的对话框 -->
+		<el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%">
+			<!-- 内容主体区域,添加用户表单 -->
+			<el-form :model="addUser" :rules="addUserRules" ref="addUserRef" label-width="80px">
+			  <el-form-item label="用户名" prop="username">
+			    <el-input v-model="addUser.username"></el-input>
+			  </el-form-item>
+				<el-form-item label="密码" prop="password">
+				  <el-input v-model="addUser.password"></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱" prop="email">
+				  <el-input v-model="addUser.email"></el-input>
+				</el-form-item>
+				<el-form-item label="手机" prop="mobile">
+				  <el-input v-model="addUser.mobile"></el-input>
+				</el-form-item>
+			</el-form>
+			<!-- 底部按钮区域 -->
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false">取 消</el-button>
+				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -64,8 +89,48 @@
 				tableData: [],
 				// 请求数据页码等信息
 				queryInfo: {
-					pageSize:2, //每页展示的数据数量
+					pageSize: 2, //每页展示的数据数量
 					pageNum: 1 //当前页展示的数据数
+				},
+				// 添加用户对话框的显示隐藏
+				dialogVisible : false,
+				// 添加用户数据
+				addUser:{
+					username: '',
+					password: '',
+					email: '',
+					mobile :'',
+				},
+				addUserRules:{
+					username:[
+						{
+							required: true, message: '请输入用户名', trigger: 'blur'
+						},
+						{
+							min: 11, max: 11, message: '长度在11个字符的手机号', trigger: 'blur'
+						}
+					],
+					password:[
+						{
+							required: true, message: '请输入密码', trigger: 'blur'
+						},
+						{
+							min: 6, max: 18, message: '长度在6-18个字符', trigger: 'blur'
+						}
+					],
+					email: [
+						{
+							required: true, message: '请输入邮箱', trigger: 'blur'
+						}
+					],
+					mobile: [
+						{
+							required: true, message: '请输入手机号', trigger: 'blur'
+						},
+						{
+							min: 11, max: 11, message: '长度在11个字符的手机号', trigger: 'blur'
+						}
+					]
 				}
 			}
 		},
@@ -79,16 +144,21 @@
 					this.$message.error("获取用户列表出错")
 				})
 		},
-		methods:{
+		methods: {
 			// 监听pagesize改变的事件
-			handleSizeChange(newSize){
-				this.queryInfo.pageSize = newSize  //获取新的每页展示的数据量
+			handleSizeChange(newSize) {
+				this.queryInfo.pageSize = newSize //获取新的每页展示的数据量
 				// 此处需要再次调用数据请求重新获取数据，因为是模拟接口，一次性获取 全部的数据
 			},
 			// 监听页码改变的事件
-			handleCurrentChange(newPage){
+			handleCurrentChange(newPage) {
 				console.log(newPage)
 				this.queryInfo.pageNum = newPage
+			},
+			// 监听switch开关的状态变化
+			switchStatuChange(usrtInfo) {
+				// 获取到switch开关变化,此时要发起网络请求,请求接口修改用户状态
+				console.log(usrtInfo)
 			}
 		}
 	}
