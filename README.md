@@ -1,3 +1,4 @@
+在线预览：http://admin.nuomizi.top/#/login
 # mall-admin
 
 ## Project setup
