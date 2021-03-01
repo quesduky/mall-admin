@@ -3,6 +3,7 @@
 		<!-- 面包屑导航 -->
 		<el-breadcrumb separator-class="el-icon-arrow-right">
 			<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+			<el-breadcrumb-item :to="{ path: '' }">数据统计</el-breadcrumb-item>
 			<el-breadcrumb-item>用户数据</el-breadcrumb-item>
 		</el-breadcrumb>
 		<!-- 卡片区域 -->
@@ -55,7 +56,7 @@
 		</el-card>
 
 		<!-- 添加用户的对话框 -->
-		<el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%">
+		<el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%" @close="dialogClose">
 			<!-- 内容主体区域,添加用户表单 -->
 			<el-form :model="addUser" :rules="addUserRules" ref="addUserRef" label-width="80px">
 			  <el-form-item label="用户名" prop="username">
@@ -74,7 +75,7 @@
 			<!-- 底部按钮区域 -->
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+				<el-button type="primary" @click="addUsers">确 定</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -159,6 +160,20 @@
 			switchStatuChange(usrtInfo) {
 				// 获取到switch开关变化,此时要发起网络请求,请求接口修改用户状态
 				console.log(usrtInfo)
+			},
+			// 监听添加用户对话框取消按钮事件
+			dialogClose(){
+				this.$refs.addUserRef.resetFields()
+			},
+			// 监听添加用户对话框确定按钮事件
+			addUsers(){
+				this.$refs.addUserRef.validate(vaild =>{
+					if(!vaild) return 
+					//此处发起添加用户网络请求,请求添加用户接口,提交参数,添加成功以后从新请求更新列表
+					
+					this.dialogVisible = false
+					this.$message.success("添加用户成功")
+				})
 			}
 		}
 	}
