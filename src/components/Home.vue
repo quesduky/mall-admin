@@ -14,7 +14,9 @@
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>个人中心</el-dropdown-item>
 						<el-dropdown-item>修改密码</el-dropdown-item>
-						<el-dropdown-item>注销登陆</el-dropdown-item>
+						<el-dropdown-item >
+							<el-button type="text" @click="logout">注销登陆</el-button>
+						</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 				<span>admin</span>
@@ -69,7 +71,14 @@
 
 <script>
 	export default {
-		name: "Home"
+		name: "Home",
+		methods:{
+			logout() {
+				//注销登录 为注销按钮添加点击事件 然后清空session storage中的token
+				//设置跳转到登录页面
+				this.$router.push('/login')
+			}
+		}
 	}
 </script>
 

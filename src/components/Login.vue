@@ -130,14 +130,18 @@
 						mobile: 15668421689,
 						pwd: 123456,
 						imgcode: 4567,
-						k: 0.1
+						k: 0.1,
+						token:''
 					}
 				}).then( res =>{
 					res = JSON.parse(res.data)
 					if(res.code == 200){
 						// 登录成功弹框
 						this.$message.success("登录成功")
-						//console.log(res.msg)
+						// console.log()
+						//登录成功后将token存在cookie中
+						Cookies.set('Token','01zzz')
+						
 					}
 					else{
 						//登录失败弹框
